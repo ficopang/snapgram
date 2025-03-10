@@ -111,6 +111,7 @@ class _HomeState extends State<Home> {
                       imagePath: '${ApiService.baseUrl}${post.imageUrl}',
                       initialLikes: post.likeCount,
                       initialLiked: post.liked,
+                      totalComments: post.commentCount,
                       date: post.createdAt,
                       caption: post.caption,
                     );

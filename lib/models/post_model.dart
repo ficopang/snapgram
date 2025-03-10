@@ -5,6 +5,7 @@ class PostModel {
   final String imageUrl;
   final String caption;
   final int likeCount;
+  final int commentCount;
   final bool liked;
 
   PostModel({
@@ -13,6 +14,7 @@ class PostModel {
     required this.imageUrl,
     required this.caption,
     required this.likeCount,
+    required this.commentCount,
     required this.createdAt,
     required this.liked,
   });
@@ -24,6 +26,7 @@ class PostModel {
       imageUrl: json['imageUrl'],
       caption: json['caption'],
       likeCount: json['likeCount'],
+      commentCount: json['commentCount'],
       createdAt: json['createdAt'],
       liked: json['liked'],
     );

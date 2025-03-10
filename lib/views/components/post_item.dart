@@ -16,6 +16,7 @@ class PostItem extends StatefulWidget {
   final String imagePath;
   final int initialLikes;
   final bool initialLiked;
+  final int totalComments;
   final String date;
   final String caption;
 
@@ -28,6 +29,7 @@ class PostItem extends StatefulWidget {
     required this.imagePath,
     required this.initialLikes,
     required this.initialLiked,
+    required this.totalComments,
     required this.date,
     required this.caption,
   });
@@ -39,12 +41,14 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   late bool _liked;
   late int _likes;
+  late int _comments;
 
   @override
   void initState() {
     super.initState();
     _liked = widget.initialLiked;
     _likes = widget.initialLikes;
+    _comments = widget.totalComments;
   }
 
   @override
@@ -94,6 +98,10 @@ class _PostItemState extends State<PostItem> {
                 ).fetchComments(widget.postId.toString());
                 _showCommentDrawer(context, widget.postId);
               },
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.only(end: 8),
+              child: Text(_comments.toString()),
             ),
             IconButton(icon: Icon(Icons.send), onPressed: () {}),
             Expanded(child: SizedBox()),
