@@ -32,6 +32,15 @@ class _RegisterViewState extends State<RegisterView> {
           autoCloseDuration: const Duration(seconds: 5),
         ),
       );
+    } else if (registerViewModel.errorMessage.isNotEmpty) {
+      // Show error message
+      Future.microtask(
+        () => toastification.show(
+          title: Text(registerViewModel.errorMessage),
+          type: ToastificationType.error,
+          autoCloseDuration: const Duration(seconds: 5),
+        ),
+      );
     }
 
     return Scaffold(
@@ -85,6 +94,9 @@ class _RegisterViewState extends State<RegisterView> {
                               }
                               return null;
                             },
+                            onChanged: (value) {
+                              _password = value;
+                            },
                             onSaved: (value) {
                               _password = value!;
                             },
@@ -100,10 +112,13 @@ class _RegisterViewState extends State<RegisterView> {
                               if (value == null || value.isEmpty) {
                                 return 'Please confirm your password';
                               }
-                              // if (value != _password) {
-                              //   return 'Passwords do not match';
-                              // }
+                              if (value != _password) {
+                                return 'Passwords do not match';
+                              }
                               return null;
+                            },
+                            onChanged: (value) {
+                              _confirmPassword = value;
                             },
                             onSaved: (value) {
                               _confirmPassword = value!;

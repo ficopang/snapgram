@@ -6,15 +6,19 @@ import 'package:snapgram/models/user_register_model.dart';
 
 class RegisterViewModel with ChangeNotifier {
   bool _isSuccess = false;
+  String _errorMessage = '';
   bool _isLoading = false;
   UserRegisterModel? _user;
 
   bool get isSuccess => _isSuccess;
+  String get errorMessage => _errorMessage;
   bool get isLoading => _isLoading;
   UserRegisterModel? get user => _user;
 
   Future<void> register(String username, String password) async {
     _isLoading = true;
+    _errorMessage = '';
+    _isSuccess = false;
     notifyListeners();
 
     try {
@@ -28,6 +32,8 @@ class RegisterViewModel with ChangeNotifier {
         final user = json.decode(response.body);
         _user = UserRegisterModel.fromJson(user);
         _isSuccess = true;
+      } else {
+        _errorMessage = 'Failed to register';
       }
     } catch (e) {
       throw e;
