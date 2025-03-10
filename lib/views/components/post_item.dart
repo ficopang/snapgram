@@ -178,20 +178,53 @@ void _showCommentDrawer(BuildContext context, int postId) {
                         itemCount: commentViewModel.comments.length,
                         itemBuilder: (context, index) {
                           final comment = commentViewModel.comments[index];
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Color(
-                                Random().nextInt(0xffffffff),
+                          return Column(
+                            children: [
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Color(
+                                    Random().nextInt(0xffffffff),
+                                  ),
+                                ),
+                                title: Text(comment.username),
+                                subtitle: ExpandableText(
+                                  comment.text,
+                                  expandText: 'show more',
+                                  collapseText: 'show less',
+                                  maxLines: 2,
+                                  linkColor: Colors.grey,
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.reply, color: Colors.grey),
+                                  onPressed: () {
+                                    _showReplyDialog(
+                                      context,
+                                      comment.id,
+                                      postId,
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                            title: Text(comment.username),
-                            subtitle: ExpandableText(
-                              comment.text,
-                              expandText: 'show more',
-                              collapseText: 'show less',
-                              maxLines: 2,
-                              linkColor: Colors.grey,
-                            ),
+
+                              if (comment.replies.isNotEmpty)
+                                Padding(
+                                  padding: EdgeInsets.only(left: 40),
+                                  child: Column(
+                                    children:
+                                        comment.replies.map((reply) {
+                                          return ListTile(
+                                            leading: CircleAvatar(
+                                              backgroundColor: Color(
+                                                Random().nextInt(0xffffffff),
+                                              ),
+                                            ),
+                                            title: Text(reply.username),
+                                            subtitle: Text(reply.content),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                            ],
                           );
                         },
                       ),
@@ -207,6 +240,41 @@ void _showCommentDrawer(BuildContext context, int postId) {
                     ),
                   ],
                 ),
+      );
+    },
+  );
+}
+
+void _showReplyDialog(BuildContext context, int commentId, int postId) {
+  TextEditingController replyController = TextEditingController();
+  final commentViewModel = Provider.of<CommentViewModel>(
+    context,
+    listen: false,
+  );
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Reply"),
+        content: TextField(
+          controller: replyController,
+          decoration: InputDecoration(hintText: "Write a reply..."),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              commentViewModel.addReply(commentId, replyController.text);
+              Navigator.pop(context);
+              commentViewModel.fetchComments(postId.toString());
+            },
+            child: Text("Reply"),
+          ),
+        ],
       );
     },
   );

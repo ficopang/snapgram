@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snapgram/api_service.dart';
 import 'package:snapgram/viewModels/comment_view_model.dart';
 
-import 'comment_vieiw_model_test.mocks.dart';
+import 'comment_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<http.Client>()])
 void main() {
@@ -38,6 +38,9 @@ void main() {
           'username': 'testuser',
           'text': 'Comment 1',
           'createdAt': '2023-10-27T10:00:00Z',
+          'replies': [
+            {'id': 1, 'content': 'Reply 1', 'username': 'replyuser'},
+          ],
         },
         {
           'id': 2,
@@ -45,6 +48,7 @@ void main() {
           'username': 'anotheruser',
           'text': 'Comment 2',
           'createdAt': '2023-10-28T11:00:00Z',
+          'replies': [],
         },
       ];
 
@@ -60,6 +64,8 @@ void main() {
       expect(viewModel.comments.length, 2);
       expect(viewModel.comments[0].id, 1);
       expect(viewModel.comments[0].text, 'Comment 1');
+      expect(viewModel.comments[0].replies.length, 1);
+      expect(viewModel.comments[0].replies[0].content, 'Reply 1');
       expect(viewModel.isLoading, false);
       expect(viewModel.errorMessage, '');
 
@@ -118,6 +124,7 @@ void main() {
           'username': 'testuser',
           'text': 'Comment 1',
           'createdAt': '2023-10-27T10:00:00Z',
+          'replies': [],
         },
       ];
 
@@ -140,7 +147,7 @@ void main() {
         mockClient.post(
           Uri.parse('${ApiService.baseUrl}/comments/1'),
           headers: {'Authorization': 'Bearer mockToken'},
-          body: {"text": "Test Comment"},
+          body: {"text": "Test Comment"}, // Encode body as json
         ),
       ).thenAnswer((_) async => http.Response('OK', 200));
 
@@ -152,7 +159,7 @@ void main() {
         mockClient.post(
           Uri.parse('${ApiService.baseUrl}/comments/1'),
           headers: {'Authorization': 'Bearer mockToken'},
-          body: {"text": "Test Comment"},
+          body: {"text": "Test Comment"}, // Encode body as json
         ),
       ).called(1);
     });

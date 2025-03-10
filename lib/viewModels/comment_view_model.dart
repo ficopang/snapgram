@@ -73,4 +73,29 @@ class CommentViewModel with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> addReply(int commentId, String content) async {
+    _errorMessage = "";
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      final response = await ApiService.httpClient.post(
+        Uri.parse('${ApiService.baseUrl}/replies/$commentId'),
+        headers: {'Authorization': 'Bearer $token'},
+        body: {"content": content},
+      );
+
+      if (response.statusCode == 403) {
+        _errorMessage = 'Unauthorized';
+      } else if (response.statusCode != 200) {
+        _errorMessage = "Failed to add Reply";
+      }
+    } catch (e) {
+      throw e;
+    } finally {
+      notifyListeners();
+    }
+  }
 }
