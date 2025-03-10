@@ -36,7 +36,6 @@ class AddPostViewModel with ChangeNotifier {
 
   void updateCaption(String newCaption) {
     _caption = newCaption;
-    notifyListeners();
   }
 
   Future<void> addPost(String caption, File image) async {
