@@ -38,7 +38,7 @@ void main() {
           'imageUrl': 'url1',
           'caption': 'Test Post 1',
           'likeCount': 10,
-          'commentCount': 3, // Added commentCount
+          'commentCount': 3,
           'createdAt': '2023-10-27T10:00:00Z',
           'liked': true,
         },
@@ -48,7 +48,7 @@ void main() {
           'imageUrl': 'url2',
           'caption': 'Test Post 2',
           'likeCount': 5,
-          'commentCount': 0, // Added commentCount
+          'commentCount': 0,
           'createdAt': '2023-10-28T11:00:00Z',
           'liked': false,
         },
@@ -69,7 +69,7 @@ void main() {
       expect(viewModel.posts[0].imageUrl, 'url1');
       expect(viewModel.posts[0].caption, 'Test Post 1');
       expect(viewModel.posts[0].likeCount, 10);
-      expect(viewModel.posts[0].commentCount, 3); // Check commentCount
+      expect(viewModel.posts[0].commentCount, 3);
       expect(viewModel.posts[0].createdAt, '2023-10-27T10:00:00Z');
       expect(viewModel.posts[0].liked, true);
       expect(viewModel.isLoading, false);
@@ -127,7 +127,7 @@ void main() {
           'imageUrl': 'url1',
           'caption': 'Test Post 1',
           'likeCount': 10,
-          'commentCount': 2, // Added commentCount
+          'commentCount': 2,
           'createdAt': '2023-10-27T10:00:00Z',
           'liked': true,
         },
