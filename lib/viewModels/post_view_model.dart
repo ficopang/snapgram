@@ -18,7 +18,7 @@ class PostViewModel with ChangeNotifier {
     _errorMessage = "";
     notifyListeners();
 
-    await Future.delayed(Duration(seconds: 2));
+    // await Future.delayed(Duration(seconds: 2));
 
     try {
       final prefs = await SharedPreferences.getInstance();
