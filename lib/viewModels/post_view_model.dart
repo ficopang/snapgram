@@ -18,7 +18,7 @@ class PostViewModel with ChangeNotifier {
     _errorMessage = "";
     notifyListeners();
 
-    await Future.delayed(Duration(seconds: 2));
+    // await Future.delayed(Duration(seconds: 2));
 
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -44,6 +44,35 @@ class PostViewModel with ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> deletePost(int postId) async {
+    _errorMessage = "";
+    print("called");
+    // notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      final response = await ApiService.httpClient.delete(
+        Uri.parse('${ApiService.baseUrl}/posts/$postId'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      print("called");
+
+      if (response.statusCode == 403) {
+        _errorMessage = 'Unauthorized';
+      } else if (response.statusCode != 200) {
+        _errorMessage = "Failed to like post";
+      } else {
+        print(response.body);
+      }
+    } catch (e) {
+      throw e;
+    } finally {
+      // notifyListeners();
     }
   }
 

@@ -33,6 +33,15 @@ class _HomeState extends State<Home> {
           '/create_post',
         ).then((value) => {_refreshPost()});
       }
+      if (index == 4) {
+        Navigator.pushNamed(
+          context,
+          '/profile',
+        ).then((value) => {_refreshPost()});
+      }
+      if (index == 3) {
+        Navigator.pushNamed(context, '/like').then((value) => {_refreshPost()});
+      }
     });
   }
 
@@ -142,16 +151,21 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildStoryItem(String name) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Color(Random().nextInt(0xffffffff)),
-          ),
-          Text(name),
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, "/story");
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: Color(Random().nextInt(0xffffffff)),
+            ),
+            Text(name),
+          ],
+        ),
       ),
     );
   }

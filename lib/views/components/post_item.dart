@@ -39,6 +39,7 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
+  int selectedIndex = 0;
   late bool _liked;
   late int _likes;
   late int _comments;
@@ -61,7 +62,21 @@ class _PostItemState extends State<PostItem> {
             backgroundColor: Color(Random().nextInt(0xffffffff)),
           ),
           title: Text(widget.username),
-          trailing: Icon(Icons.more_vert),
+          trailing: PopupMenuButton(
+            onSelected: (value) async {
+              print(value);
+              await Provider.of<PostViewModel>(
+                context,
+                listen: false,
+              ).deletePost(widget.postId);
+            },
+            itemBuilder:
+                (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(child: const Text('Delete'), value: "tet"),
+                  const PopupMenuItem(child: Text('Item 2')),
+                  const PopupMenuItem(child: Text('Item 3')),
+                ],
+          ),
         ),
         Image.network(widget.imagePath),
         Row(
